@@ -44,3 +44,7 @@ h1 {
 .tache:last-child {
     border-bottom: none;
 }
+
+.done {
+    text-decoration: line-through;
+}
