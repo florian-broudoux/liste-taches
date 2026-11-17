@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6;
+    color: #1f2937;
+    padding: 40px 16px;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.compteur {
+    text-align: center;
+    color: #4b5563;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.liste-taches {
+    list-style: none;
+}
+
+.tache {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tache:last-child {
+    border-bottom: none;
+}
