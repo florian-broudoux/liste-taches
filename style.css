@@ -39,12 +39,44 @@ h1 {
 .tache {
     padding: 12px 15px;
     border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .tache:last-child {
     border-bottom: none;
 }
 
-.done {
+.tache-texte {
+    flex: 1;
+}
+
+.done .tache-texte {
     text-decoration: line-through;
+    color: #6b7280;
+}
+
+.tache button {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.btn-supprimer {
+    background-color: #b91c1c;
+}
+
+.btn-supprimer:hover {
+    background-color: #991b1b;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 2px;
 }
