@@ -81,16 +81,37 @@ select:focus-visible {
     outline-offset: 2px;
 }
 
-[hidden] {
-    display: none !important;
-}
-
-.zone-ajout {
+.form-ajout {
     margin-bottom: 20px;
 }
 
-#btn-nouvelle-tache,
-#btn-ajouter {
+.form-ajout label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.ligne-ajout {
+    display: flex;
+    gap: 8px;
+}
+
+#nouvelle-tache {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 2px solid #6b7280;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+#nouvelle-tache.invalide {
+    border-color: #b91c1c;
+    background-color: #fef2f2;
+}
+
+.btn-ajouter {
     background-color: #1d4ed8;
     color: #ffffff;
     border: none;
@@ -100,30 +121,15 @@ select:focus-visible {
     cursor: pointer;
 }
 
-#btn-nouvelle-tache:hover,
-#btn-ajouter:hover {
+.btn-ajouter:hover {
     background-color: #1e40af;
 }
 
-.formulaire-ajout {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.formulaire-ajout label {
-    width: 100%;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-#champ-nouvelle-tache {
-    flex: 1;
-    padding: 8px 10px;
-    border: 2px solid #6b7280;
-    border-radius: 6px;
-    font-size: 14px;
+.message-erreur {
+    color: #b91c1c;
+    font-size: 13px;
+    min-height: 1.4em;
+    margin-top: 4px;
 }
 
 .btn-terminer {

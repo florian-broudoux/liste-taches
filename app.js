@@ -22,10 +22,9 @@ const taches = [
 const liste = document.querySelector(".liste-taches");
 const compteur = document.querySelector(".compteur");
 
-const btnNouvelleTache = document.querySelector("#btn-nouvelle-tache");
-const formulaireAjout = document.querySelector("#formulaire-ajout");
-const champNouvelleTache = document.querySelector("#champ-nouvelle-tache");
-const btnAjouter = document.querySelector("#btn-ajouter");
+const formAjout = document.getElementById("form-ajout");
+const champTache = document.getElementById("nouvelle-tache");
+const erreurTache = document.getElementById("erreur-tache");
 
 function creerElementTache(tache) {
     const li = document.createElement("li");
@@ -85,12 +84,7 @@ function mettreAJourCompteur() {
     compteur.textContent = `${terminees} terminée(s), ${enCours} en cours`;
 }
 
-function ajouterTache() {
-    const texte = champNouvelleTache.value.trim();
-    if (texte === "") {
-        champNouvelleTache.focus();
-        return;
-    }
+function ajouterTache(texte) {
     const maintenant = Date.now();
     taches.push({
         id: maintenant,
@@ -99,28 +93,40 @@ function ajouterTache() {
         date: maintenant,
     });
     afficherTaches();
-    champNouvelleTache.value = "";
-    champNouvelleTache.focus();
 }
 
-btnNouvelleTache.addEventListener("click", () => {
-    formulaireAjout.hidden = !formulaireAjout.hidden;
-    btnNouvelleTache.setAttribute(
-        "aria-expanded",
-        formulaireAjout.hidden ? "false" : "true",
-    );
-    if (!formulaireAjout.hidden) {
-        champNouvelleTache.focus();
+function afficherErreur(message) {
+    erreurTache.textContent = message;
+    champTache.classList.add("invalide");
+    champTache.setAttribute("aria-invalid", "true");
+    champTache.focus();
+}
+
+function effacerErreur() {
+    erreurTache.textContent = "";
+    champTache.classList.remove("invalide");
+    champTache.setAttribute("aria-invalid", "false");
+}
+
+formAjout.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const texte = champTache.value.trim();
+    if (texte === "") {
+        afficherErreur("Veuillez saisir une tâche.");
+        return;
+    } else if (texte.length < 3) {
+        afficherErreur("La tâche doit contenir au moins 3 caractères.");
+        return;
+    } else {
+        ajouterTache(texte);
+        effacerErreur();
+        champTache.value = "";
+        champTache.focus();
     }
 });
 
-btnAjouter.addEventListener("click", ajouterTache);
-
-champNouvelleTache.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-        ajouterTache;
-    }
-});
+champTache.addEventListener("input", effacerErreur);
 
 liste.addEventListener("click", (event) => {
     const bouton = event.target.closest("button");
@@ -139,8 +145,6 @@ liste.addEventListener("click", (event) => {
 });
 
 afficherTaches();
-
-
 
 /* CONTENU AVANT FICHE 4
 const titre = document.querySelector("h1");
