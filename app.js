@@ -42,11 +42,16 @@ function creerElementTache(tache) {
     btnSuppr.classList.add("btn-supprimer");
     btnSuppr.textContent = "Supprimer";
     btnSuppr.setAttribute("aria-label", `Supprimer : ${tache.texte}`);
-    btnSuppr.addEventListener("click", () => {
-        supprimerTache(tache.id);
-    });
 
-    li.append(spanTexte, btnSuppr);
+    const btnTerminer = document.createElement("button");
+    btnTerminer.classList.add("btn-terminer");
+    btnTerminer.textContent = tache.terminee ? "Réactiver" : "Terminer";
+    btnTerminer.setAttribute(
+        "aria-label",
+        `${btnTerminer.textContent} : ${tache.texte}`,
+    );
+
+    li.append(spanTexte, btnTerminer, btnSuppr);
     return li;
 }
 
@@ -59,9 +64,17 @@ function afficherTaches() {
 }
 
 function supprimerTache(id) {
-    const index = taches.findIndex((tache) => tache.id === id)
+    const index = taches.findIndex((tache) => tache.id === id);
     if (index >= 0) {
         taches.splice(index, 1);
+    }
+    afficherTaches();
+}
+
+function basculerTache(id) {
+    const tache = taches.find((element) => element.id === id);
+    if (tache !== undefined) {
+        tache.terminee = !tache.terminee;
     }
     afficherTaches();
 }
@@ -72,14 +85,19 @@ function mettreAJourCompteur() {
     compteur.textContent = `${terminees} terminée(s), ${enCours} en cours`;
 }
 
-function ajouterTache () {
+function ajouterTache() {
     const texte = champNouvelleTache.value.trim();
     if (texte === "") {
         champNouvelleTache.focus();
         return;
     }
     const maintenant = Date.now();
-    taches.push({id: maintenant, texte: texte, terminee: false, date: maintenant});
+    taches.push({
+        id: maintenant,
+        texte: texte,
+        terminee: false,
+        date: maintenant,
+    });
     afficherTaches();
     champNouvelleTache.value = "";
     champNouvelleTache.focus();
@@ -87,7 +105,10 @@ function ajouterTache () {
 
 btnNouvelleTache.addEventListener("click", () => {
     formulaireAjout.hidden = !formulaireAjout.hidden;
-    btnNouvelleTache.setAttribute("aria-expanded", formulaireAjout.hidden ? "false" : "true");
+    btnNouvelleTache.setAttribute(
+        "aria-expanded",
+        formulaireAjout.hidden ? "false" : "true",
+    );
     if (!formulaireAjout.hidden) {
         champNouvelleTache.focus();
     }
@@ -98,6 +119,22 @@ btnAjouter.addEventListener("click", ajouterTache);
 champNouvelleTache.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         ajouterTache;
+    }
+});
+
+liste.addEventListener("click", (event) => {
+    const bouton = event.target.closest("button");
+    if (bouton === null) {
+        return;
+    }
+
+    const li = bouton.closest(".tache");
+    const id = Number(li.dataset.id);
+
+    if (bouton.classList.contains("btn-supprimer")) {
+        supprimerTache(id);
+    } else if (bouton.classList.contains("btn-terminer")) {
+        basculerTache(id);
     }
 });
 
