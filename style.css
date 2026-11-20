@@ -139,3 +139,10 @@ select:focus-visible {
 .btn-terminer:hover {
     background-color: #166534;
 }
+
+.liste-vide {
+    text-align: center;
+    color: #4b5563;
+    font-style: italic;
+    padding: 20px;
+}
