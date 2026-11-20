@@ -23,12 +23,18 @@ const tachesDeDepart = [
 
 const liste = document.querySelector(".liste-taches");
 const compteur = document.querySelector(".compteur");
-
 const formAjout = document.getElementById("form-ajout");
 const champTache = document.getElementById("nouvelle-tache");
 const erreurTache = document.getElementById("erreur-tache");
-
+const groupeFiltres = document.querySelector(".filtres");
+const boutonsFiltre = document.querySelectorAll(".btn-filtre");
+const champRecherche = document.querySelector("#recherche");
+const listeTri = document.querySelector("#tri");
+const statsTexte = document.querySelector("#stats-texte");
+const barreRemplissage = document.querySelector(".barre-remplissage");
 const taches = chargerTaches();
+
+let filtreActuel = "toutes";
 
 function chargerTaches() {
     const donnees = localStorage.getItem(CLE_STOCKAGE);
@@ -70,18 +76,45 @@ function creerElementTache(tache) {
     return li;
 }
 
+function tachesAAfficher() {
+    const recherche = champRecherche.value.trim().toLowerCase();
+
+    let resultat = taches.filter((tache) => {
+
+    if (filtreActuel === "en-cours") {
+        return !tache.terminee;
+    }
+    if (filtreActuel === "terminees") {
+        return tache.terminee
+    }
+    return true;
+    });
+
+    resultat = resultat.filter((tache) => tache.texte.toLowerCase().includes(recherche));
+
+    if (listeTri.value === "nom") {
+        resultat = [...resultat].sort((a, b) => a.texte.localeCompare(b.texte));
+    } else {
+        resultat = [...resultat].sort((a, b) => a.date - b.date);
+    }
+
+    return resultat;
+}
+
 function afficherTaches() {
+    const visibles = tachesAAfficher()
     liste.innerHTML = "";
-    if (taches.length === 0) {
+    if (visibles.length === 0) {
         const vide = document.createElement("li");
         vide.textContent = "Aucune tâche à afficher";
         vide.classList.add("liste-vide");
         liste.append(vide);
     } else {
-        const elements = taches.map(creerElementTache);
+        const elements = visibles.map(creerElementTache);
         liste.append(...elements);
     }
     mettreAJourCompteur();
+    mettreAJourStatistiques();
 }
 
 function supprimerTache(id) {
@@ -106,6 +139,15 @@ function mettreAJourCompteur() {
     const terminees = taches.filter((tache) => tache.terminee).length;
     const enCours = taches.length - terminees;
     compteur.textContent = `${terminees} terminée(s), ${enCours} en cours`;
+}
+
+function mettreAJourStatistiques() {
+    const total = taches.length;
+    const terminees = taches.filter((tache) => tache.terminee).length;
+    const pourcentage = total === 0 ? 0 : Math.round((terminees / total) * 100);
+
+    statsTexte.textContent = `${terminees} / ${total} terminée(s) · ${pourcentage} %`;
+    barreRemplissage.style.width = `${pourcentage}%`;
 }
 
 function ajouterTache(texte) {
@@ -168,6 +210,28 @@ liste.addEventListener("click", (event) => {
         basculerTache(id);
     }
 });
+
+groupeFiltres.addEventListener("click", (event) => {
+    const bouton = event.target.closest(".btn-filtre");
+    if (bouton === null) {
+        return;
+    }
+
+    // Un seul bouton actif à la fois
+    boutonsFiltre.forEach((element) => {
+        element.classList.remove("actif");
+        element.setAttribute("aria-pressed", "false");
+    });
+    bouton.classList.add("actif");
+    bouton.setAttribute("aria-pressed", "true");
+
+    filtreActuel = bouton.dataset.filtre;
+    afficherTaches();
+});
+
+champRecherche.addEventListener("input", afficherTaches);
+
+listeTri.addEventListener("change", afficherTaches);
 
 afficherTaches();
 

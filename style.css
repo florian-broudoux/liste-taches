@@ -146,3 +146,90 @@ select:focus-visible {
     font-style: italic;
     padding: 20px;
 }
+
+/* ===== Fiche 9 : filtres, recherche, tri et statistiques ===== */
+
+.outils {
+    margin-bottom: 16px;
+}
+
+.filtres {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btn-filtre {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #6b7280;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #1f2937;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.btn-filtre:hover {
+    background-color: #f3f4f6;
+}
+
+/* Le filtre choisi */
+.btn-filtre.actif {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #ffffff;
+}
+
+.recherche-tri {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.champ-outil {
+    flex: 1 1 180px;
+}
+
+.champ-outil label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.champ-outil input,
+.champ-outil select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 2px solid #6b7280;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #ffffff;
+}
+
+/* Statistiques et barre de progression */
+.stats {
+    border-top: 1px solid #e5e7eb;
+    margin-top: 12px;
+    padding-top: 12px;
+    text-align: center;
+    color: #4b5563;
+    font-size: 14px;
+}
+
+.barre-progression {
+    height: 10px;
+    background-color: #e5e7eb;
+    border-radius: 5px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.barre-remplissage {
+    height: 100%;
+    width: 0;
+    background-color: #15803d;
+    transition: width 0.3s;
+}
+
